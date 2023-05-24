@@ -28,6 +28,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  bool isValid = false;
+
 
   @override
   void dispose() {
@@ -67,15 +69,21 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: Colors.white),
                       ),
                       CustomTextField(
-                          validator: Validate.email,
+                       //   validator: Validate.email,
                           controller: userNameController,
                           hintText: 'Email Address',
                           textInputType: TextInputType.emailAddress),
+
+                    isValid == true?      Container(child:  Text('PLease enter the email',style: 
+                          TextStyle(color: Colors.red),),):SizedBox(),
+                    
                       CustomTextField(
-                          validator: Validate.password,
+                        //  validator: Validate.password,
                           controller: passwordController,
                           hintText: 'Password',
                           textInputType: TextInputType.text),
+                             isValid == true?     Container(child:  Text('PLease enter the email',style: 
+                          TextStyle(color: Colors.red),),):SizedBox(),
                       SizedBox(
                         height: 10,
                       ),
@@ -83,8 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         listener: (context, state) {
                        if(state is ErrorEmailSigIn){
                         CustomDialogue().Dialogg(context, title: 'Error', message:'PLease Try Again!');
-                            userNameController.clear();
-            passwordController.clear();
+                    
         
                        }else if(state is LoadedEmailSigIn){
              
@@ -96,13 +103,20 @@ class _LoginScreenState extends State<LoginScreen> {
                               color: AppColors.primaryColor,
                               text: state is LoadingEmailSigIn?'Loading...':'Log in',
                               onTap: () {
+                                
+                                
         
-                                if (formKey.currentState!.validate()) {
+                                if (userNameController.text.isNotEmpty && passwordController.text.isNotEmpty  ) {
                                   context
                                       .read<EmailSignInCubit>()
                                       .emailLogin(userNameController.text);
                                     FocusScope.of(context).unfocus();
+                                }else if(userNameController.text.isEmpty && passwordController.text.isEmpty  ){
+                            
+                                 isValid = true;
+                          
                                 }
+                               
                               });
                         },
                       ),

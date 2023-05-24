@@ -49,7 +49,7 @@ class PostCustomCard extends StatelessWidget {
                 height: 200.h,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(
+                    image: NetworkImage(
                      postImageUrls,
                     ),
                     fit: BoxFit.cover,
